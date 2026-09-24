@@ -4,28 +4,28 @@ Chrome extension that automatically groups the tabs open in this window by proje
 
 ## Install in Chrome
 
-Do **not** load the repo root, and do **not** load the `extension` folder. Chrome needs the **built** pack.
+Chrome must load the **`extension`** folder (the one that contains both `manifest.json` and `background.js`). Do not pick the repo root.
 
-### 1. Get the built pack
-
-If you just cloned the repo, it already includes `extension/dist`. If you changed the TypeScript sources, rebuild:
+### 1. Update and build
 
 ```bash
-git clone https://github.com/mohabbis/tab-sense.git
-cd tab-sense
+cd ~/clipstack/tab-sense
+git pull
 npm install
 npm run build:extension
+ls extension/manifest.json extension/background.js
 ```
+
+You should see both files. If `background.js` is missing, the build did not run.
 
 ### 2. Load it unpacked
 
 1. Open **chrome://extensions**
 2. Turn on **Developer mode** (top right)
 3. Click **Load unpacked**
-4. Select this folder only: **`tab-sense/extension/dist`**
-5. Confirm you see `manifest.json`, `background.js`, and `popup.html` in that folder
+4. Select **`tab-sense/extension`** — not the repo root, not `extension/src`
 
-If Chrome says it cannot find `background.js` or the manifest is missing, you selected the wrong folder.
+If Chrome says it could not load the background script or the manifest, you picked the wrong folder.
 
 ### 3. Pin the icon
 
@@ -45,8 +45,8 @@ Pinned tabs, `chrome://` pages, and the new-tab page are left alone. A group is 
 | Chrome error | Cause |
 | --- | --- |
 | Manifest file is missing or unreadable | You picked the repo root |
-| Could not load `background.js` | You picked `extension/` instead of `extension/dist` |
-| Service worker failed to start | Rebuild with `npm run build:extension`, then click **Reload** on the extension card |
+| Could not load background script | You picked `extension` before building, or `extension/src` |
+| Service worker failed to start | Run `npm run build:extension`, then click **Reload** on the extension card |
 | Nothing groups | Need 2+ http(s) tabs that share a project or topic; pin the icon and click **Group this window** |
 
 ## Engine playground (optional)

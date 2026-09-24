@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# keep the unpacked Chrome pack in git so Load unpacked works after clone
-# /extension/dist
+# built chrome files live in /extension and are committed
+/extension/dist
