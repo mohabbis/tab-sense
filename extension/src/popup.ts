@@ -40,7 +40,7 @@ function renderGroups(groups: GroupPreview[]) {
   if (groups.length === 0) {
     const empty = document.createElement("p");
     empty.className = "status";
-    empty.textContent = "Not enough related tabs to form a Chrome group yet.";
+    empty.textContent = "No http(s) tabs in this window to group.";
     groupsEl.append(empty);
     return;
   }

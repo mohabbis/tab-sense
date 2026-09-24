@@ -55,12 +55,13 @@ export function toEngineTabs(tabs: BrowserTabLike[]): Tab[] {
 }
 
 export function groupsToApply(groups: TabGroup[]): TabGroup[] {
-  return groups.filter((group) => group.kind !== "loose" && group.tabIds.length >= 2);
+  return groups.filter((group) => group.tabIds.length >= 1);
 }
 
 export function chromeGroupTitle(name: string): string {
   const parts = name.split("·").map((part) => part.trim()).filter(Boolean);
-  const preferred = parts.at(-1) || name.trim();
+  let preferred = parts.at(-1) || name.trim();
+  preferred = preferred.replace(/^(www\.)/, "").replace(/\.(com|org|net|io|dev|app)$/i, "");
   if (preferred.length <= CHROME_TITLE_MAX) return preferred;
   return preferred.slice(0, CHROME_TITLE_MAX);
 }

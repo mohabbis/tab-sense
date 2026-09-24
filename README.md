@@ -38,7 +38,18 @@ Auto-group is on. Open a few related tabs (two pages from the same GitHub repo, 
 - Toolbar popup: Auto on/off, mode, **Group this window**, **Ungroup**
 - Shortcut: `Alt+Shift+G`
 
-Pinned tabs, `chrome://` pages, and the new-tab page are left alone. A group is created only when at least two tabs match.
+Pinned tabs, `chrome://` pages, and the new-tab page are left alone. One tab still gets its own group. Matching tabs share a group; different projects or sites become separate groups.
+
+## Update the copy already loaded in Chrome
+
+```bash
+cd ~/clipstack/tab-sense
+git pull
+npm install
+npm run build:extension
+```
+
+Then open `chrome://extensions` and click **Reload** on the Tab-Sense card. You do not need to Load unpacked again unless you moved the folder.
 
 ## If it still fails
 

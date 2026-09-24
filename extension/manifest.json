@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Tab-Sense",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Automatically group your open Chrome tabs by project or topic.",
   "permissions": ["tabs", "tabGroups", "storage"],
   "background": {

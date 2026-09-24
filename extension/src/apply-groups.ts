@@ -61,7 +61,7 @@ export async function groupWindow(
     const tabIds = group.tabIds
       .map((id) => Number(id))
       .filter((id) => groupable.some((tab) => tab.id === id));
-    if (tabIds.length < 2) continue;
+    if (tabIds.length < 1) continue;
     const title = chromeGroupTitle(group.name);
     const reuse = existingByTitle.get(title);
     try {

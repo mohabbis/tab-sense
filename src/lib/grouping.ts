@@ -165,6 +165,8 @@ const HOST_TOPICS: Record<string, string[]> = {
   "developer.mozilla.org": ["mdn"],
   "css-tricks.com": ["css"],
   "smashingmagazine.com": ["frontend"],
+  "youtube.com": ["youtube"],
+  "youtu.be": ["youtube"],
 };
 
 const LIFE_HOSTS: Record<string, string> = {
@@ -640,7 +642,6 @@ export function groupTabs(
 
   const shouldUseProjects = mode === "auto" || mode === "project";
   const shouldUseTopics = mode === "auto" || mode === "topic";
-  const shouldUseDomains = mode === "auto" || mode === "domain";
 
   if (shouldUseProjects) {
     for (const entry of keyIndex.values()) {
@@ -791,35 +792,18 @@ export function groupTabs(
     stillLoose.push(...nextLoose);
   }
 
-  if (shouldUseDomains && mode !== "domain") {
+  const remaining = stillLoose.filter((id) => !placed.has(id));
+  if (remaining.length > 0) {
     const byDomain = new Map<string, string[]>();
-    for (const id of stillLoose) {
-      const domain = signals.get(id)?.registrable;
-      if (!domain || GENERIC_DOMAINS.has(domain)) continue;
+    for (const id of remaining) {
+      const domain = signals.get(id)?.registrable || "other";
       const list = byDomain.get(domain) ?? [];
       list.push(id);
       byDomain.set(domain, list);
     }
-    const consumed = new Set<string>();
     for (const [domain, ids] of byDomain) {
-      if (ids.length < 2) continue;
-      takeCluster(ids, "project", `domain:${domain}`);
-      for (const id of ids) consumed.add(id);
+      takeCluster(ids, domain === "other" ? "loose" : "project", `site:${domain}`);
     }
-    const remaining = stillLoose.filter((id) => !consumed.has(id) && !placed.has(id));
-    stillLoose.length = 0;
-    stillLoose.push(...remaining);
-  }
-
-  if (stillLoose.length > 0) {
-    ensureGroup({
-      id: "auto:loose",
-      name: "Loose tabs",
-      color: "stone",
-      kind: "loose",
-      reason: "No shared project, topic, or site",
-      tabIds: stillLoose.filter((id) => !placed.has(id)),
-    });
   }
 
   const result = [...groups.values()]

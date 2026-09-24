@@ -76,11 +76,12 @@ function toEngineTabs(tabs) {
   }));
 }
 function groupsToApply(groups) {
-  return groups.filter((group) => group.kind !== "loose" && group.tabIds.length >= 2);
+  return groups.filter((group) => group.tabIds.length >= 1);
 }
 function chromeGroupTitle(name) {
   const parts = name.split("\xB7").map((part) => part.trim()).filter(Boolean);
-  const preferred = parts.at(-1) || name.trim();
+  let preferred = parts.at(-1) || name.trim();
+  preferred = preferred.replace(/^(www\.)/, "").replace(/\.(com|org|net|io|dev|app)$/i, "");
   if (preferred.length <= CHROME_TITLE_MAX) return preferred;
   return preferred.slice(0, CHROME_TITLE_MAX);
 }
@@ -237,7 +238,9 @@ var HOST_TOPICS = {
   "developer.chrome.com": ["chrome", "performance"],
   "developer.mozilla.org": ["mdn"],
   "css-tricks.com": ["css"],
-  "smashingmagazine.com": ["frontend"]
+  "smashingmagazine.com": ["frontend"],
+  "youtube.com": ["youtube"],
+  "youtu.be": ["youtube"]
 };
 var LIFE_HOSTS = {
   "mail.google.com": "google",
@@ -767,34 +770,18 @@ function groupTabs(tabs, options = {}) {
     stillLoose.length = 0;
     stillLoose.push(...nextLoose);
   }
-  if (shouldUseDomains && mode !== "domain") {
+  const remaining = stillLoose.filter((id) => !placed.has(id));
+  if (remaining.length > 0) {
     const byDomain = /* @__PURE__ */ new Map();
-    for (const id of stillLoose) {
-      const domain = signals.get(id)?.registrable;
-      if (!domain || GENERIC_DOMAINS.has(domain)) continue;
+    for (const id of remaining) {
+      const domain = signals.get(id)?.registrable || "other";
       const list = byDomain.get(domain) ?? [];
       list.push(id);
       byDomain.set(domain, list);
     }
-    const consumed = /* @__PURE__ */ new Set();
     for (const [domain, ids] of byDomain) {
-      if (ids.length < 2) continue;
-      takeCluster(ids, "project", `domain:${domain}`);
-      for (const id of ids) consumed.add(id);
+      takeCluster(ids, domain === "other" ? "loose" : "project", `site:${domain}`);
     }
-    const remaining = stillLoose.filter((id) => !consumed.has(id) && !placed.has(id));
-    stillLoose.length = 0;
-    stillLoose.push(...remaining);
-  }
-  if (stillLoose.length > 0) {
-    ensureGroup({
-      id: "auto:loose",
-      name: "Loose tabs",
-      color: "stone",
-      kind: "loose",
-      reason: "No shared project, topic, or site",
-      tabIds: stillLoose.filter((id) => !placed.has(id))
-    });
   }
   const result = [...groups.values()].map((group) => ({
     ...group,
@@ -845,7 +832,7 @@ async function groupWindow(windowId, mode) {
   const claimed = /* @__PURE__ */ new Set();
   for (const group of planned) {
     const tabIds = group.tabIds.map((id) => Number(id)).filter((id) => groupable.some((tab) => tab.id === id));
-    if (tabIds.length < 2) continue;
+    if (tabIds.length < 1) continue;
     const title = chromeGroupTitle(group.name);
     const reuse = existingByTitle.get(title);
     try {
