@@ -636,7 +636,6 @@ function groupTabs(tabs, options = {}) {
   }
   const shouldUseProjects = mode === "auto" || mode === "project";
   const shouldUseTopics = mode === "auto" || mode === "topic";
-  const shouldUseDomains = mode === "auto" || mode === "domain";
   if (shouldUseProjects) {
     for (const entry of keyIndex.values()) {
       if (entry.weight >= 7 && entry.tabIds.length >= 1) {

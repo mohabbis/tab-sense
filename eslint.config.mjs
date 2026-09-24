@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "extension/dist/**",
+    "extension/background.js",
+    "extension/popup.js",
   ]),
 ]);
 
