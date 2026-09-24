@@ -36,7 +36,7 @@ export function AddTabDialog({ open, onOpenChange, onAdd }: AddTabDialogProps) {
         <DialogHeader>
           <DialogTitle>Add a tab</DialogTitle>
           <DialogDescription>
-            Drop in any URL. Flock will place it in the project or topic it belongs to.
+            Drop in any URL. Tab-Sense will place it in the project or topic it belongs to.
           </DialogDescription>
         </DialogHeader>
         <form

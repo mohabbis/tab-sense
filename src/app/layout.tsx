@@ -19,10 +19,10 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Flock — tab groups by project",
+  title: "Tab-Sense — group open tabs by project",
   description:
-    "A tab manager that automatically groups open tabs by project or topic.",
-  icons: { icon: "/flock.svg" },
+    "A Chrome extension that automatically groups your open tabs by project or topic.",
+  icons: { icon: "/tab-sense.svg" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

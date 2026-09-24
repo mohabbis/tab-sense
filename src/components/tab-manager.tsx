@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FolderPlus, Menu, RotateCcw, Search, Sparkles, Upload, X } from "lucide-react";
 import { useTabSession } from "@/hooks/use-tab-session";
 import type { GroupingMode } from "@/lib/types";
+import { ExtensionBanner } from "@/components/extension-banner";
 import { GroupNav } from "@/components/group-nav";
 import { GroupPanel } from "@/components/group-panel";
 import { AddTabDialog, ImportDialog, NewGroupDialog } from "@/components/session-dialogs";
@@ -100,7 +101,7 @@ export function TabManager() {
         />
       </div>
       <div className="mt-auto rounded-xl bg-white/4 p-3 text-xs leading-5 text-muted-foreground">
-        Flock reads titles and URLs — GitHub repos, Linear teams, Vercel previews, Figma files,
+        Tab-Sense reads titles and URLs — GitHub repos, Linear teams, Vercel previews, Figma files,
         localhost, and overlapping topics — then stacks related tabs together.
       </div>
     </div>
@@ -108,6 +109,7 @@ export function TabManager() {
 
   return (
     <div className="flex min-h-full flex-col">
+      <ExtensionBanner />
       <header className="sticky top-0 z-20 border-b border-white/8 bg-[oklch(0.19_0.012_70/0.86)] backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
@@ -121,11 +123,11 @@ export function TabManager() {
               <Menu />
             </Button>
             <div className="min-w-0 flex-1">
-              <p className="font-display text-2xl leading-none tracking-tight text-[oklch(0.93_0.03_80)] italic">
-                Flock
+              <p className="font-display text-2xl leading-none tracking-tight text-[oklch(0.93_0.03_80)]">
+                Tab-Sense
               </p>
               <p className="mt-1 hidden text-sm text-muted-foreground sm:block">
-                Open tabs, grouped by the project or topic they belong to.
+                Engine playground. The Chrome extension groups whatever is open right now.
               </p>
             </div>
             <Button variant="outline" size="sm" onClick={() => setImportOpen(true)}>
@@ -257,7 +259,7 @@ export function TabManager() {
       <Sheet open={navOpen} onOpenChange={setNavOpen}>
         <SheetContent side="left" className="p-4">
           <SheetHeader className="px-0">
-            <SheetTitle className="font-display italic">Flock</SheetTitle>
+            <SheetTitle className="font-display">Tab-Sense</SheetTitle>
             <SheetDescription>Jump to a group or review this session.</SheetDescription>
           </SheetHeader>
           {sidebar}
@@ -301,7 +303,7 @@ function EmptySession({
     <div className="rounded-2xl bg-card/80 px-6 py-16 text-center ring-1 ring-white/8">
       <p className="font-display text-3xl italic">Nothing open</p>
       <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-        Add a URL or import the tabs from your current window. Flock will stack them by project
+        Add a URL or import the tabs from your current window. Tab-Sense will stack them by project
         and topic.
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-2">

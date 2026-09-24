@@ -1,42 +1,52 @@
-# Flock
+# Tab-Sense
 
-A tab manager that automatically groups open tabs by **project** or **topic**.
+A Chrome extension that automatically groups the tabs that are **actually open right now** by project or topic.
 
-Flock is a session board for the tabs you already have open. Add URLs one at a time or import a list. The grouping engine reads hosts, paths, and titles — GitHub repos, Linear workspaces, Vercel previews, Figma files, localhost, and overlapping topics — then stacks related tabs together.
+Tab-Sense reads each tab’s URL and title — GitHub repos, Linear workspaces, Vercel previews, Figma files, localhost, and overlapping topics — then creates native Chrome tab groups in the current window.
 
-It ships with a sample work session so you can see grouping immediately. Your session is stored in this browser only.
-
-## Run locally
+## Install (unpacked)
 
 ```bash
+git clone https://github.com/mohabbis/tab-sense.git
+cd tab-sense
 npm install
+npm run build:extension
+```
+
+1. Open `chrome://extensions`
+2. Turn on **Developer mode**
+3. Click **Load unpacked**
+4. Select the `extension/dist` folder
+
+Auto-group is on by default. Open a few related tabs (for example two GitHub pages from the same repo plus Linear) and they stack themselves. Click the toolbar icon to change mode, group once, or ungroup.
+
+Keyboard shortcut: `Alt+Shift+G` groups the current window.
+
+## What it does
+
+- Watches the current Chrome window as tabs open, navigate, and close
+- Groups **http(s)** tabs with 2+ related pages
+- Leaves pinned tabs, new-tab pages, and `chrome://` URLs alone
+- Reuses an existing group when the short title still matches
+- Badge shows how many groups Tab-Sense applied
+
+Modes: **Auto** (project, then topic), **Project**, **Topic**, **Domain**.
+
+## Engine playground
+
+The Next.js page is only a playground for the grouping engine. It cannot see Chrome’s real tab list.
+
+```bash
 npm run dev
 ```
 
 Open [http://localhost:43187](http://localhost:43187).
 
 ```bash
-npm test    # grouping engine
+npm test
 npm run lint
-npm run build
 ```
 
-## What you can do
+## Repository
 
-- Browse auto-grouped stacks from the sample session
-- Switch grouping modes: Auto, Project, Topic, or Domain
-- Add a tab or import URLs, markdown links, `Title | URL` lines, or a Chrome bookmarks HTML export
-- Search across titles, URLs, and group names
-- Focus, collapse, rename (custom), move, or close groups
-- Restore the sample session or start empty
-
-## Publish to GitHub
-
-This project is ready to commit. Create a GitHub repository from the Cursor project view (**Create repo**), then push this branch. After the repo exists:
-
-```bash
-git remote -v
-git push -u origin main
-```
-
-If you already have an empty GitHub repo, add it as `origin` and push `main`.
+https://github.com/mohabbis/tab-sense

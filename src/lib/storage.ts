@@ -1,7 +1,7 @@
 import type { SessionState } from "@/lib/types";
 import { cloneDemoTabs } from "@/lib/demo-session";
 
-export const STORAGE_KEY = "flock.session.v1";
+export const STORAGE_KEY = "tab-sense.session.v1";
 
 export function defaultSession(): SessionState {
   return {

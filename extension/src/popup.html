@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab-Sense</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <p class="mark">Tab-Sense</p>
+        <p class="sub">Groups whatever is open in this window</p>
+      </div>
+      <label class="auto">
+        <input id="auto" type="checkbox" />
+        <span>Auto</span>
+      </label>
+    </header>
+
+    <section class="controls">
+      <label class="field">
+        <span>Mode</span>
+        <select id="mode">
+          <option value="auto">Auto</option>
+          <option value="project">Project</option>
+          <option value="topic">Topic</option>
+          <option value="domain">Domain</option>
+        </select>
+      </label>
+      <button id="group" type="button" class="primary">Group this window</button>
+      <button id="ungroup" type="button" class="ghost">Ungroup</button>
+    </section>
+
+    <p id="status" class="status">Reading open tabs…</p>
+    <p id="error" class="error" hidden></p>
+    <div id="groups" class="groups"></div>
+    <p class="hint">
+      Auto-group runs as you open and close tabs. Shortcut:
+      <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd>
+    </p>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
