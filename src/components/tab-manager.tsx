@@ -174,16 +174,7 @@ export function TabManager() {
       <div className="mx-auto flex w-full max-w-6xl flex-1 gap-6 px-4 py-6 sm:px-6">
         <aside className="hidden w-64 shrink-0 lg:block">{sidebar}</aside>
         <main className="min-w-0 flex-1">
-          {!session.ready ? (
-            <div className="grid gap-3">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="h-36 animate-pulse rounded-2xl bg-white/4 ring-1 ring-white/6"
-                />
-              ))}
-            </div>
-          ) : totalTabs === 0 ? (
+          {totalTabs === 0 ? (
             <EmptySession
               onAdd={() => setAddOpen(true)}
               onImport={() => setImportOpen(true)}

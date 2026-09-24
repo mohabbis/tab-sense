@@ -1,9 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
 import { groupTabs, nextGroupColor } from "@/lib/grouping";
-import { defaultSession, loadSession, saveSession } from "@/lib/storage";
-import type { CustomGroup, GroupingMode, SessionState, Tab } from "@/lib/types";
+import {
+  getServerSessionSnapshot,
+  getSessionSnapshot,
+  subscribeSession,
+  writeSession,
+} from "@/lib/session-store";
+import { defaultSession } from "@/lib/storage";
+import type { CustomGroup, GroupingMode, Tab } from "@/lib/types";
 import { isHttpUrl, parseUrl, titleFromUrl } from "@/lib/url";
 
 function uid(prefix: string) {
@@ -14,34 +20,13 @@ function uid(prefix: string) {
 }
 
 export function useTabSession() {
-  const mounted = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
+  const state = useSyncExternalStore(
+    subscribeSession,
+    getSessionSnapshot,
+    getServerSessionSnapshot,
   );
-  const [cache, setCache] = useState<{ ready: boolean; state: SessionState }>({
-    ready: false,
-    state: defaultSession(),
-  });
   const [notice, setNotice] = useState<string | null>(null);
-
-  if (mounted && !cache.ready) {
-    setCache({ ready: true, state: loadSession() });
-  }
-
-  const state = cache.state;
-  const ready = cache.ready;
-  const setState = (updater: SessionState | ((current: SessionState) => SessionState)) => {
-    setCache((current) => ({
-      ready: true,
-      state: typeof updater === "function" ? updater(current.state) : updater,
-    }));
-  };
-
-  useEffect(() => {
-    if (!ready) return;
-    saveSession(state);
-  }, [ready, state]);
+  const setState = writeSession;
 
   const groups = useMemo(
     () =>
@@ -208,7 +193,7 @@ export function useTabSession() {
   }
 
   return {
-    ready,
+    ready: true,
     state,
     groups,
     tabById,
