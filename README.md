@@ -1,10 +1,14 @@
 # Tab-Sense
 
-A Chrome extension that automatically groups the tabs that are **actually open right now** by project or topic.
+Chrome extension that automatically groups the tabs open in this window by project or topic.
 
-Tab-Sense reads each tab’s URL and title — GitHub repos, Linear workspaces, Vercel previews, Figma files, localhost, and overlapping topics — then creates native Chrome tab groups in the current window.
+## Install in Chrome
 
-## Install (unpacked)
+Do **not** load the repo root, and do **not** load the `extension` folder. Chrome needs the **built** pack.
+
+### 1. Get the built pack
+
+If you just cloned the repo, it already includes `extension/dist`. If you changed the TypeScript sources, rebuild:
 
 ```bash
 git clone https://github.com/mohabbis/tab-sense.git
@@ -13,39 +17,48 @@ npm install
 npm run build:extension
 ```
 
-1. Open `chrome://extensions`
-2. Turn on **Developer mode**
+### 2. Load it unpacked
+
+1. Open **chrome://extensions**
+2. Turn on **Developer mode** (top right)
 3. Click **Load unpacked**
-4. Select the `extension/dist` folder
+4. Select this folder only: **`tab-sense/extension/dist`**
+5. Confirm you see `manifest.json`, `background.js`, and `popup.html` in that folder
 
-Auto-group is on by default. Open a few related tabs (for example two GitHub pages from the same repo plus Linear) and they stack themselves. Click the toolbar icon to change mode, group once, or ungroup.
+If Chrome says it cannot find `background.js` or the manifest is missing, you selected the wrong folder.
 
-Keyboard shortcut: `Alt+Shift+G` groups the current window.
+### 3. Pin the icon
 
-## What it does
+Click the puzzle-piece **Extensions** menu → pin **Tab-Sense**. The popup will not stay in the toolbar until you pin it.
 
-- Watches the current Chrome window as tabs open, navigate, and close
-- Groups **http(s)** tabs with 2+ related pages
-- Leaves pinned tabs, new-tab pages, and `chrome://` URLs alone
-- Reuses an existing group when the short title still matches
-- Badge shows how many groups Tab-Sense applied
+### 4. Use it
 
-Modes: **Auto** (project, then topic), **Project**, **Topic**, **Domain**.
+Auto-group is on. Open a few related tabs (two pages from the same GitHub repo, plus Linear or a preview) and Chrome tab groups should appear.
 
-## Engine playground
+- Toolbar popup: Auto on/off, mode, **Group this window**, **Ungroup**
+- Shortcut: `Alt+Shift+G`
 
-The Next.js page is only a playground for the grouping engine. It cannot see Chrome’s real tab list.
+Pinned tabs, `chrome://` pages, and the new-tab page are left alone. A group is created only when at least two tabs match.
+
+## If it still fails
+
+| Chrome error | Cause |
+| --- | --- |
+| Manifest file is missing or unreadable | You picked the repo root |
+| Could not load `background.js` | You picked `extension/` instead of `extension/dist` |
+| Service worker failed to start | Rebuild with `npm run build:extension`, then click **Reload** on the extension card |
+| Nothing groups | Need 2+ http(s) tabs that share a project or topic; pin the icon and click **Group this window** |
+
+## Engine playground (optional)
+
+This Next.js page cannot see Chrome’s real tabs. It only demos the grouping engine.
 
 ```bash
+npm install
 npm run dev
 ```
 
 Open [http://localhost:43187](http://localhost:43187).
-
-```bash
-npm test
-npm run lint
-```
 
 ## Repository
 
